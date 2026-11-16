@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <title>Peněženka - Bet Arena</title>
+	<!-- CSS -->
+	<link rel="stylesheet" href="/assets/css/theme.css">
+</head>
+<body>
+    <x-dc>
+        <helmet>
+            <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet">
+        </helmet>
+
+        <div class="wallet-page">
+            <main class="wallet-main">
+
+                <!-- TITLE -->
+                <div class="wallet-header">
+                    <div class="wallet-breadcrumb">Peněženka · /wallet/</div>
+                    <h1 class="wallet-title">Peněženka</h1>
+                    <p class="wallet-subtitle" data-dc-tpl="8">Krátký popis stránky..</p>
+                </div>
+
+                <!-- SUBNAV -->                 
+                <div data-dc-tpl="9" class="wallet-filters">
+                    <a href="/wallet/">
+                        <span data-dc-tpl="10" class="wallet-filter wallet-filter-active">Přehled</span>
+                    </a>
+                    <a href="/wallet/deposit">
+                        <span data-dc-tpl="11" class="wallet-filter">Vklad</span>
+                    </a>
+                    <a href="/wallet/withdraw">
+                        <span data-dc-tpl="12" class="wallet-filter">Výběr</span>
+                    </a>
+                    <a href="/wallet/wait">
+                        <span data-dc-tpl="12" class="wallet-filter">Čeká na schválení</span>
+                    </a>
+                    <a href="/wallet/method">
+                        <span data-dc-tpl="13" class="wallet-filter">Platební metody</span>
+                    </a>
+                </div>
+
+                <!-- CONTENT -->
+				<!-- SECTION: Stats -->
+                <section data-dc-tpl="14" class="wallet-tournaments mb-2">
+                    <div data-dc-tpl="15" class="wallet-tournaments-title">Přehled</div>
+                    <div class="wallet-balances" id="wallet-balances">
+                        <div class="wallet-balance-card">
+                            <h2 class="wallet-balance-label">CZK peněženka</h2>
+                            <p class="wallet-balance-value" id="wallet-balance-czk">…</p>
+                        </div>
+                        <div class="wallet-balance-card">
+                            <h2 class="wallet-balance-label">BONUS peněženka</h2>
+                            <p class="wallet-balance-value wallet-balance-bonus" id="wallet-balance-bonus">…</p>
+                        </div>
+                    </div>
+                    <p class="wallet-demo-note" id="wallet-balances-status" role="status" hidden></p>
+                </section>
+				
+				<!-- SECTION: Transactions history -->
+				<section data-dc-tpl="14" class="wallet-tournaments">
+                    <div data-dc-tpl="15" class="wallet-tournaments-title">Historie transakcí</div>
+                    <div class="wallet-history-scroll" role="region" aria-label="Historie vkladů a výběrů" tabindex="0">
+                        <table class="wallet-history">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Datum a čas</th>
+                                    <th scope="col">Typ</th>
+                                    <th scope="col">Platební metoda</th>
+                                    <th scope="col" class="wallet-amount">Částka</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wallet-history-body">
+                                <tr>
+                                    <td>15. 11. 2026, 00:50</td>
+                                    <td>Výběr</td>
+                                    <td>Bankovní převod</td>
+                                    <td class="wallet-amount wallet-withdraw">−500,00 Kč</td>
+                                </tr>
+                                <tr>
+                                    <td>15. 11. 2026, 00:10</td>
+                                    <td>Vklad</td>
+                                    <td>Bankovní převod</td>
+                                    <td class="wallet-amount wallet-deposit">+2 000,00 Kč</td>
+                                </tr>
+                                <tr>
+                                    <td>14. 11. 2026, 18:45</td>
+                                    <td>Výběr</td>
+                                    <td>Bankovní převod</td>
+                                    <td class="wallet-amount wallet-withdraw">−250,00 Kč</td>
+                                </tr>
+                                <tr>
+                                    <td>14. 11. 2026, 16:30</td>
+                                    <td>Vklad</td>
+                                    <td>Platební karta</td>
+                                    <td class="wallet-amount wallet-deposit">+1 000,00 Kč</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </x-dc>
+    <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+    class Component extends DCLogic {
+        renderVals() {
+            return {};
+        }
+    }
+    </script>
+    <script src="/services/api.js"></script>
+    <script>
+	
+window.addEventListener('load', () => {
+	getWallets().then(response => {
+
+getWallets().then(response => {
+	walletsResponse = response.data;
+
+	const czk = document.getElementById('wallet-balance-czk');
+	const bonus = document.getElementById('wallet-balance-bonus');
+
+	czk.textContent = walletsResponse.find(w => w.currency === 'CZK')?.balance ?? '0.00';
+	bonus.textContent = walletsResponse.find(w => w.currency === 'BSC')?.balance ?? '0.00';
+}); 
+
+/* Proměnné */
+const walletHistory = document.getElementById('wallet-history-body');
+
+let transactionsResponse;
+
+/* Obsluha */
+getTransactions().then(response => {
+	transactionsResponse = response.data;
+	console.log('Transactions:', transactionsResponse);
+
+	walletHistory.textContent = '';
+
+	if (!response.success || transactionsResponse.length === 0) {
+		walletHistory.innerHTML = '<tr><td colspan="4">Zatím žádné transakce.</td></tr>';
+		return;
+	}
+
+	/* Vykreslení dat */
+	transactionsResponse.forEach(t => {
+		const isDeposit = t.type === 'deposit';
+		const amount = parseFloat(t.amount).toLocaleString('cs-CZ', { minimumFractionDigits: 2 });
+
+		const row = document.createElement('tr');
+		const cells = [
+			new Date(t.created_at).toLocaleString('cs-CZ', { dateStyle: 'medium', timeStyle: 'short' }),
+			isDeposit ? 'Vklad' : 'Výběr',
+			t.method ?? '–',
+			(isDeposit ? '+' : '−') + amount + ' ' + t.currency
+		];
+
+		cells.forEach((text, i) => {
+			const td = document.createElement('td');
+			td.textContent = text;
+			if (i === 3) td.className = 'wallet-amount ' + (isDeposit ? 'wallet-deposit' : 'wallet-withdraw');
+			row.appendChild(td);
+		});
+
+		walletHistory.appendChild(row);
+	});
+});
+	
+	});
+});
+
+
+    </script>
+</body>
+</html>
