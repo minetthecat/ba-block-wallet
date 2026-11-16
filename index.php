@@ -41,6 +41,7 @@ include __DIR__ . '/services/router.php';
 	<script src="/services/api.js"></script>
 	<script src="/services/wallet.js"></script>
 	<script src="/services/payment-method.js"></script>
+	<script src="/services/wallet-pages.js"></script>
 	<!-- Main JS -->
 	<script src="/assets/js/main.js"></script>
 	<script src="/modules/auth.js"></script>

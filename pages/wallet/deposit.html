@@ -47,8 +47,8 @@
         }
 
         .wallet-subtitle {
-            margin: 12px 0px 0px; 
-            font-size: 17px; 
+            margin: 12px 0px 0px;
+            font-size: 17px;
             color: rgb(157, 176, 165);
         }
 
@@ -411,10 +411,10 @@
                 <div class="wallet-header">
                     <div class="wallet-breadcrumb">Peněženka · /wallet/deposit/</div>
                     <h1 class="wallet-title">Vklad</h1>
-                    <p class="wallet-subtitle" data-dc-tpl="8">Krátký popis stránky..</p>
+                    <p class="wallet-subtitle" data-dc-tpl="8">Vyberte platební metodu a zadejte částku.</p>
                 </div>
 
-                <!-- SUBNAV -->                 
+                <!-- SUBNAV -->
                 <div data-dc-tpl="9" class="wallet-filters">
                     <a href="/wallet/">
                         <span data-dc-tpl="10" class="wallet-filter">Přehled</span>
@@ -437,83 +437,12 @@
 				<!-- SECTION: My methods -->
                 <section data-dc-tpl="14" class="wallet-tournaments mb-2">
                     <div data-dc-tpl="15" class="wallet-tournaments-title">Moje platební metody</div>
-                    <div class="wallet-saved-methods">
-                        <details class="wallet-method-collapse">
-                            <summary class="wallet-method-summary">
-                                <span class="wallet-method-icon" aria-hidden="true">BANK</span>
-                                <span class="wallet-method-summary-text">
-                                    <span class="wallet-method-summary-title">Bankovní účet</span>
-                                    <span class="wallet-method-summary-description">Testovací účet · •••• 0003 / 0000</span>
-                                </span>
-                            </summary>
-                            <form class="wallet-deposit-form" data-method="bank">
-                                <label class="wallet-deposit-field" for="deposit-bank-amount">
-                                    Částka vkladu
-                                    <input id="deposit-bank-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required>
-                                </label>
-                                <label class="wallet-deposit-field" for="deposit-bank-currency">
-                                    Měna
-                                    <select id="deposit-bank-currency" name="currency">
-                                        <option value="CZK">CZK</option>
-                                    </select>
-                                </label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
-                            </form>
-                        </details>
-                        <details class="wallet-method-collapse">
-                            <summary class="wallet-method-summary">
-                                <span class="wallet-method-icon" aria-hidden="true">CARD</span>
-                                <span class="wallet-method-summary-text">
-                                    <span class="wallet-method-summary-title">Platební karta</span>
-                                    <span class="wallet-method-summary-description">Testovací karta · •••• 4242</span>
-                                </span>
-                            </summary>
-                            <form class="wallet-deposit-form" data-method="card">
-                                <label class="wallet-deposit-field" for="deposit-card-amount">
-                                    Částka vkladu
-                                    <input id="deposit-card-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required>
-                                </label>
-                                <label class="wallet-deposit-field" for="deposit-card-currency">
-                                    Měna
-                                    <select id="deposit-card-currency" name="currency">
-                                        <option value="CZK">CZK</option>
-                                        <option value="EUR">EUR</option>
-                                    </select>
-                                </label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
-                            </form>
-                        </details>
-                        <details class="wallet-method-collapse">
-                            <summary class="wallet-method-summary">
-                                <span class="wallet-method-icon" aria-hidden="true">BSC</span>
-                                <span class="wallet-method-summary-text">
-                                    <span class="wallet-method-summary-title">Krypto peněženka</span>
-                                    <span class="wallet-method-summary-description">Testovací adresa · 0x••••0003 · Síť BSC</span>
-                                </span>
-                            </summary>
-                            <form class="wallet-deposit-form" data-method="bsc">
-                                <label class="wallet-deposit-field" for="deposit-bsc-amount">
-                                    Částka vkladu
-                                    <input id="deposit-bsc-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required>
-                                </label>
-                                <label class="wallet-deposit-field" for="deposit-bsc-currency">
-                                    Měna
-                                    <select id="deposit-bsc-currency" name="currency">
-                                        <option value="BSC">BSC</option>
-                                    </select>
-                                </label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
-                            </form>
-                        </details>
-                    </div>
+                    <div class="wallet-saved-methods" id="saved-methods"><p role="status">Načítání platebních metod…</p></div>
                 </section>
-				
+
 				<!-- SECTION: All methods -->
 				<section data-dc-tpl="14" class="wallet-tournaments">
-                    <div data-dc-tpl="15" class="wallet-tournaments-title">Všechny platební metody</div>
+                    <div data-dc-tpl="15" class="wallet-tournaments-title">Přidat platební metodu</div>
                     <div class="wallet-saved-methods">
                         <details class="wallet-method-collapse">
                             <summary class="wallet-method-summary">
@@ -535,10 +464,8 @@
                                     <label class="wallet-deposit-field" for="new-bank-recipient_bank_address">Adresa banky příjemce<input id="new-bank-recipient_bank_address" name="recipient_bank_address" type="text" placeholder="Ulice, město a stát" maxlength="255"></label>
                                     <p class="wallet-deposit-message">Vyplňte IBAN nebo číslo účtu společně s kódem banky.</p>
                                 </fieldset>
-                                <label class="wallet-deposit-field" for="new-bank-amount">Částka<input id="new-bank-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required></label>
-                                <label class="wallet-deposit-field" for="new-bank-currency">Měna<select id="new-bank-currency" name="currency"><option value="CZK">CZK</option><option value="EUR">EUR</option></select></label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
+                                <button class="wallet-deposit-submit" type="submit">Přidat metodu</button>
+                                <p class="wallet-deposit-message" role="status" aria-live="polite"></p>
                             </form>
                         </details>
                         <details class="wallet-method-collapse">
@@ -556,13 +483,10 @@
                                     <label class="wallet-deposit-field" for="new-card-card_holder_name">Jméno držitele<input id="new-card-card_holder_name" name="card_holder_name" type="text" placeholder="Jméno a příjmení" maxlength="100" autocomplete="cc-name" required></label>
                                     <label class="wallet-deposit-field" for="new-card-card_number">Číslo karty<input id="new-card-card_number" name="card_number" type="text" placeholder="1234 5678 9012 3456" maxlength="23" inputmode="numeric" autocomplete="cc-number" pattern="[0-9 ]{12,23}" required></label>
                                     <label class="wallet-deposit-field" for="new-card-card_expiry">Datum platnosti (MM/RR)<input id="new-card-card_expiry" name="card_expiry" type="text" placeholder="12/30" maxlength="5" inputmode="numeric" autocomplete="cc-exp" pattern="(0[1-9]|1[0-2])/[0-9]{2}" required></label>
-                                    <label class="wallet-deposit-field" for="new-card-card_cvv">CVV kód<input id="new-card-card_cvv" name="card_cvv" type="password" placeholder="•••" maxlength="4" inputmode="numeric" autocomplete="cc-csc" pattern="[0-9]{3,4}" required></label>
-                                    <p class="wallet-deposit-message">CVV slouží pouze pro tuto ukázkovou platbu a neukládá se k platební metodě.</p>
+                                    <p class="wallet-deposit-message">Bezpečnostní kód se k platební metodě neukládá.</p>
                                 </fieldset>
-                                <label class="wallet-deposit-field" for="new-card-amount">Částka<input id="new-card-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required></label>
-                                <label class="wallet-deposit-field" for="new-card-currency">Měna<select id="new-card-currency" name="currency"><option value="CZK">CZK</option><option value="EUR">EUR</option></select></label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
+                                <button class="wallet-deposit-submit" type="submit">Přidat metodu</button>
+                                <p class="wallet-deposit-message" role="status" aria-live="polite"></p>
                             </form>
                         </details>
                         <details class="wallet-method-collapse">
@@ -580,10 +504,8 @@
                                     <label class="wallet-deposit-field" for="new-bsc-recipient_crypto_address">Crypto adresa příjemce<input id="new-bsc-recipient_crypto_address" name="recipient_crypto_address" type="text" placeholder="0x…" maxlength="42" pattern="0x[a-fA-F0-9]{40}" spellcheck="false" required></label>
                                     <p class="wallet-deposit-message">Síť: BSC (BEP-20).</p>
                                 </fieldset>
-                                <label class="wallet-deposit-field" for="new-bsc-amount">Částka<input id="new-bsc-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required></label>
-                                <label class="wallet-deposit-field" for="new-bsc-currency">Měna<select id="new-bsc-currency" name="currency"><option value="BSC">BSC</option></select></label>
-                                <button class="wallet-deposit-submit" type="submit">Vyzkoušet vklad</button>
-                                <p class="wallet-deposit-message" role="status" aria-live="polite">Ukázkový formulář. Vklad není napojený na API.</p>
+                                <button class="wallet-deposit-submit" type="submit">Přidat metodu</button>
+                                <p class="wallet-deposit-message" role="status" aria-live="polite"></p>
                             </form>
                         </details>
                     </div>
@@ -599,28 +521,6 @@
         }
     }
     </script>
-    <script>
-        document.addEventListener('submit', function (event) {
-            var form = event.target;
-            if (!form.matches('.wallet-deposit-form')) return;
-            event.preventDefault();
-            var amount = Number(form.elements.amount.value);
-            var message = form.querySelector('[role="status"]');
-            if (!Number.isFinite(amount) || amount <= 0) {
-                message.textContent = 'Zadejte platnou částku větší než nula.';
-                return;
-            }
-            var currency = form.elements.currency.value;
-            message.textContent = 'Ukázkový vklad: ' + amount.toLocaleString('cs-CZ', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }) + ' ' + currency + '. Žádná platba nebyla odeslána.';
-            if (form.dataset.newMethod === 'true') {
-                message.textContent += form.elements.save_method.checked
-                    ? ' Uložení metody je vybráno; metoda se v této ukázce neukládá.'
-                    : ' Metoda nebude uložena.';
-            }
-        });
-    </script>
+
 </body>
 </html>

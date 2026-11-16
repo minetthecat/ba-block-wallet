@@ -131,7 +131,7 @@ function wallet_move($uid, $cur, $amount, $type, $bonusId = null) {
     query('UPDATE wallet SET balance = balance ' . $operator . ' CAST(? AS DECIMAL(18,2)) WHERE wallet_id = ?', array($amount, $w['wallet_id']));
     $w = one('SELECT * FROM wallet WHERE wallet_id = ?', array($w['wallet_id']));
     query('INSERT INTO `transaction` (user_id, wallet_id, type, currency, amount, balance_after, bonus_id) VALUES (?, ?, ?, ?, ?, ?, ?)', array($uid, $w['wallet_id'], $type, $cur, $amount, $w['balance'], $bonusId));
-    return one('SELECT * FROM `transaction` WHERE transaction_id = ?', array(db()->lastInsertId()));
+    return one('SELECT *, CAST(transaction_id AS CHAR) AS transaction_id FROM `transaction` WHERE transaction_id = ?', array(db()->lastInsertId()));
 }
 function run_endpoint($group, $name, $methods) {
     ini_set('display_errors', '0');

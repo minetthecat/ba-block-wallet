@@ -47,8 +47,8 @@
         }
 
         .wallet-subtitle {
-            margin: 12px 0px 0px; 
-            font-size: 17px; 
+            margin: 12px 0px 0px;
+            font-size: 17px;
             color: rgb(157, 176, 165);
         }
 
@@ -396,7 +396,7 @@
                 grid-template-columns: 1fr;
             }
         }
-    
+
         /* ===== Společné pro Výběr / Čeká na schválení / Platební metody ===== */
         .wallet-balance-hint {
             grid-column: 1 / -1;
@@ -557,29 +557,11 @@
                                     <th scope="col">Akce</th>
                                 </tr>
                             </thead>
-                            <tbody id="wait-body">
-                                <tr>
-                                    <td>15. 11. 2026, 12:20</td>
-                                    <td>Výběr</td>
-                                    <td>Bankovní převod</td>
-                                    <td class="wallet-amount wallet-withdraw-amount">−1 000,00 Kč</td>
-                                    <td><span class="wallet-tournament-status-upcoming">Čeká na schválení</span></td>
-                                    <td><button class="wallet-btn-danger wallet-btn-small" type="button" data-cancel>Zrušit žádost</button></td>
-                                </tr>
-                                <tr>
-                                    <td>15. 11. 2026, 10:05</td>
-                                    <td>Výběr</td>
-                                    <td>Platební karta</td>
-                                    <td class="wallet-amount wallet-withdraw-amount">−20,00 €</td>
-                                    <td><span class="wallet-tournament-status-upcoming">Čeká na schválení</span></td>
-                                    <td><button class="wallet-btn-danger wallet-btn-small" type="button" data-cancel>Zrušit žádost</button></td>
-                                </tr>
-
-                            </tbody>
+                            <tbody id="wait-body"></tbody>
                         </table>
                     </div>
                     <p class="wallet-empty" id="wait-empty" hidden>Nemáte žádný výběr čekající na schválení.</p>
-                    <p class="wallet-section-note">Zde se zobrazují pouze výběry čekající na schválení. Po schválení se přesunou do Historie transakcí v Přehledu. Ukázková data, stránka není napojená na API.</p>
+                    <p class="wallet-section-note">Zde se zobrazují pouze výběry čekající na schválení. Po schválení se přesunou do Historie transakcí v Přehledu. </p>
                 </section>
 
             </main>
@@ -592,21 +574,6 @@
         }
     }
     </script>
-    <script>
-        function refreshQueue() {
-            var rows = document.querySelectorAll('#wait-body tr').length;
-            document.getElementById('wait-count').textContent = rows ? '(' + rows + ')' : '';
-            document.getElementById('wait-empty').hidden = rows > 0;
-            document.querySelector('.wallet-history-scroll').hidden = rows === 0;
-        }
-        document.addEventListener('click', function (event) {
-            var btn = event.target.closest('[data-cancel]');
-            if (!btn) return;
-            if (!window.confirm('Opravdu chcete zrušit tuto žádost o výběr?')) return;
-            btn.closest('tr').remove();
-            refreshQueue();
-        });
-        refreshQueue();
-    </script>
+
 </body>
 </html>

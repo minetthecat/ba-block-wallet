@@ -25,50 +25,8 @@
             <!-- SAVED METHODS -->
             <section data-dc-tpl="14" class="wallet-tournaments mb-2">
                 <div data-dc-tpl="15" class="wallet-tournaments-title">Moje platební metody</div>
-                <div class="wallet-saved-methods" id="saved-methods">
-                    <details class="wallet-method-collapse">
-                        <summary class="wallet-method-summary">
-                            <span class="wallet-method-icon" aria-hidden="true">BANK</span>
-                            <span class="wallet-method-summary-text">
-                                <span class="wallet-method-summary-title">Běžný účet</span>
-                                <span class="wallet-method-summary-description">Česká spořitelna · účet •••• 1453</span>
-                            </span>
-                        </summary>
-                        <div class="wallet-deposit-form">
-                            <p><strong>IBAN</strong><br>CZ•• •••• •••• •••• 1453</p>
-                            <p><strong>BIC / SWIFT</strong><br>GIBACZPX</p>
-                            <p class="wallet-deposit-message">Metoda je připravena pro vklady a výběry.</p>
-                        </div>
-                    </details>
-                    <details class="wallet-method-collapse">
-                        <summary class="wallet-method-summary">
-                            <span class="wallet-method-icon" aria-hidden="true">CARD</span>
-                            <span class="wallet-method-summary-text">
-                                <span class="wallet-method-summary-title">Visa</span>
-                                <span class="wallet-method-summary-description">•••• 4242 · platnost 12/28</span>
-                            </span>
-                        </summary>
-                        <div class="wallet-deposit-form">
-                            <p><strong>Držitel karty</strong><br>Jan Novák</p>
-                            <p><strong>Číslo karty</strong><br>•••• •••• •••• 4242</p>
-                            <p class="wallet-deposit-message">Bezpečnostní kód se neukládá.</p>
-                        </div>
-                    </details>
-                    <details class="wallet-method-collapse">
-                        <summary class="wallet-method-summary">
-                            <span class="wallet-method-icon" aria-hidden="true">BSC</span>
-                            <span class="wallet-method-summary-text">
-                                <span class="wallet-method-summary-title">BSC peněženka</span>
-                                <span class="wallet-method-summary-description">0x••••••••••••••••••••••••••••••••••••3f91 · Síť BSC</span>
-                            </span>
-                        </summary>
-                        <div class="wallet-deposit-form">
-                            <p><strong>Crypto adresa příjemce</strong><br>0x••••••••••••••••••••••••••••••••••••3f91</p>
-                            <p class="wallet-deposit-message">Síť: BSC (BEP-20).</p>
-                        </div>
-                    </details>
-                </div>
-                <p class="wallet-section-note">Zobrazené údaje jsou ukázkové. Změny na této stránce se neukládají na server.</p>
+                <div class="wallet-saved-methods" id="saved-methods"><p role="status">Načítání platebních metod…</p></div>
+                <p class="wallet-section-note">Platební metody jsou načteny z vašeho účtu.</p>
             </section>
 
             <!-- ADD METHOD -->
@@ -152,69 +110,4 @@ class Component extends DCLogic {
         return {};
     }
 }
-</script>
-<script>
-(function () {
-    'use strict';
-    var methods = document.getElementById('saved-methods');
-    if (!methods) return;
-
-    function addMethod(form) {
-        var kind = form.dataset.addMethod;
-        var data = new FormData(form);
-        var name = String(data.get('name') || '').trim();
-        var detail = '';
-        var icon = { bank: 'BANK', card: 'CARD', bsc: 'BSC' }[kind];
-
-        if (kind === 'bank') {
-            var iban = String(data.get('recipient_iban') || '').replace(/\s+/g, '');
-            var account = String(data.get('recipient_account_number') || '').trim();
-            var bankCode = String(data.get('recipient_bank_code') || '').trim();
-            if (!iban && !(account && bankCode)) {
-                form.elements.namedItem('recipient_iban').setCustomValidity('Vyplňte IBAN nebo číslo účtu společně s kódem banky.');
-                form.reportValidity();
-                return;
-            }
-            detail = (data.get('recipient_bank_name') ? data.get('recipient_bank_name') + ' · ' : '') + 'účet •••• ' + (iban || account).slice(-4);
-        } else if (kind === 'card') {
-            detail = '•••• ' + String(data.get('card_number') || '').replace(/\s+/g, '').slice(-4) + ' · platnost ' + data.get('card_expiry');
-        } else {
-            detail = '0x••••' + String(data.get('recipient_crypto_address') || '').slice(-4) + ' · Síť BSC';
-        }
-
-        var item = document.createElement('details');
-        item.className = 'wallet-method-collapse';
-        var summary = document.createElement('summary');
-        summary.className = 'wallet-method-summary';
-        var badge = document.createElement('span');
-        badge.className = 'wallet-method-icon';
-        badge.setAttribute('aria-hidden', 'true');
-        badge.textContent = icon;
-        var text = document.createElement('span');
-        text.className = 'wallet-method-summary-text';
-        var title = document.createElement('span');
-        title.className = 'wallet-method-summary-title';
-        title.textContent = name;
-        var description = document.createElement('span');
-        description.className = 'wallet-method-summary-description';
-        description.textContent = detail;
-        text.append(title, description);
-        summary.append(badge, text);
-        item.appendChild(summary);
-        methods.appendChild(item);
-        form.reset();
-        form.querySelector('[role="status"]').textContent = 'Platební metoda byla přidána do ukázkového seznamu.';
-    }
-
-    document.addEventListener('input', function (event) {
-        if (event.target.form && event.target.name === 'recipient_iban') event.target.setCustomValidity('');
-    });
-    document.addEventListener('submit', function (event) {
-        var form = event.target;
-        if (!form.matches('[data-add-method]')) return;
-        event.preventDefault();
-        if (!form.reportValidity()) return;
-        addMethod(form);
-    });
-})();
 </script>

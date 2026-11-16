@@ -231,6 +231,7 @@ Bez odchozího cizího klíče.
 | `type` | `enum('deposit','withdraw','bet','win','bonus')` | povinné | `'deposit'`, `'withdraw'`, `'bet'`, `'win'`, `'bonus'` |
 | `currency` | `enum('CZK','EUR','BSC')` | povinné | `'CZK'`, `'EUR'`, `'BSC'` |
 | `amount` | `decimal(18,2)` | povinné | Částka transakce |
+| `status` | `enum('pending','completed','cancelled')` | po migraci; výchozí 'completed' | Stav transakce |
 | `balance_after` | `decimal(18,2)` | povinné | Zůstatek po transakci |
 | `method_id` | `int(10) UNSIGNED` | výchozí NULL | ID platební metody |
 | `game_id` | `int(10) UNSIGNED` | výchozí NULL | ID hry (při sázce/výhře) |

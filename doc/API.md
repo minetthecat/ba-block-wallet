@@ -353,3 +353,17 @@ Společné jádro vrací úspěch HTTP 200 s `success`, `message`, `data`; bez v
 ## Kontrola archivu proti dokumentaci
 
 Zkontrolováno podle `api(1).zip`: 9 skupin, 37 adres, 44 operací a všech 39 obalových funkcí v `services/api.js`. Doplněno všech 5 samostatných operací platebních metod a jejich odlišný přístup, odpovědi i databázové připojení. Seznam souborů odpovídá archivu. Podrobnosti 13 tabulek a 2 pohledů jsou v DATABASE.md.
+
+## Peněženka: platební metoda a čekající výběry
+
+Před nasazením spusťte jednou `doc/migrations/20261116-wallet-status.sql`.
+Existující transakce zůstanou dokončené; nové výběry mají stav `pending`.
+Vklady a výběry vyžadují vedle `currency` a `amount` také `method_id`
+aktivní metody přihlášeného uživatele s příslušným oprávněním.
+
+`GET /api/transaction/transactions?type=withdraw&status=pending` vrací čekající
+výběry (standardní stránkování). `DELETE /api/transaction/transaction` s JSON
+`{"transaction_id":"123"}` zruší vlastní čekající výběr a atomicky vrátí částku
+do původní peněženky. Opakované zrušení vrací 409. Stav bude `cancelled`;
+původní `balance_after` zůstává historickým zůstatkem při vytvoření výběru.
+ID transakcí jsou řetězce. Přidání metody a odeslání platby jsou samostatné kroky.
